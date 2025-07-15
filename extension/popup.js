@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const zip = new JSZip();
   let totalCount = 0;
   let completedCount = 0;
+  const llmsTxtEntries = []; // Array to store entries for llms.txt
 
   // 1) Ask the service worker to boot the offscreen page if needed
   function ensureOffscreenInBackground() {
@@ -67,11 +68,16 @@ document.addEventListener('DOMContentLoaded', () => {
   async function startScan(url) {
     totalCount = 0;
     completedCount = 0;
+    llmsTxtEntries.length = 0; // Clear previous entries
     zip.folder('pages');
     log('info', 'Fetching sitemap...');
     const urls = await collectUrls(url);
     totalCount = urls.length;
     updateProgress();
+
+    let firstPageTitle = '';
+    let firstPageDescription = '';
+
     for (const pageUrl of urls) {
       log('info', `Fetching page: ${pageUrl}`);
       try {
@@ -83,8 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
           log('error', `Error processing ${pageUrl}: ${err.message}`);
           continue;
         }
-        // const res = await fetchWithRetry(pageUrl);
-        // const html = await res.text();
         log('info', 'Converting to Markdown');
         let doc = new DOMParser().parseFromString(html, 'text/html');
         doc = pruneDoc(doc)
@@ -92,6 +96,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const metaDescEl = doc.querySelector('meta[name="description"]');
         const titleText = titleEl?.textContent.trim() || '';
         const descText = metaDescEl?.getAttribute('content')?.trim() || '';
+
+        // Capture title and description of the first page for llms.txt header
+        if (completedCount === 0) {
+          firstPageTitle = titleText;
+          firstPageDescription = descText;
+        }
 
         const slug = slugify(new URL(pageUrl).pathname);
         const md = generateMD(doc, pageUrl)
@@ -102,14 +112,30 @@ document.addEventListener('DOMContentLoaded', () => {
           md
         ].filter(Boolean).join('\n\n');
 
-        zip.file(`${slug}-llms.txt`, markdown);
+        zip.file(`pages/${slug}-llms.txt`, markdown); // Changed to 'pages' folder
+
+        // Add entry for llms.txt
+        llmsTxtEntries.push(`* [${titleText || new URL(pageUrl).pathname}](${pageUrl})`);
+
       } catch (err) {
         log('error', `Error processing ${pageUrl}: ${err.message}`);
       }
       completedCount++;
       updateProgress();
     }
+
     log('info', 'Generating ZIP...');
+
+    // Generate llms.txt content
+    const llmsTxtContent = [
+      firstPageTitle ? `# ${firstPageTitle}` : '',
+      firstPageDescription ? `> ${firstPageDescription}` : '',
+      '## Pages',
+      ...llmsTxtEntries
+    ].filter(Boolean).join('\n\n');
+
+    zip.file('llms.txt', llmsTxtContent); // Add llms.txt to the root of the zip
+
     const blob = await zip.generateAsync({ type: 'blob' });
     const domain = new URL(url).hostname;
     const filename = `${domain}.zip`;
@@ -374,5 +400,9 @@ document.addEventListener('DOMContentLoaded', () => {
       .trim()                   // remove leading/trailing
       .replace(/\t/g, ' ')      // tabs → single space
       .replace(/ {2,}/g, ' ');  // collapse 2+ spaces to one
+  }
+
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 });

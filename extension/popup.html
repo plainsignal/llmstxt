@@ -381,18 +381,27 @@
 
     <!-- Embed Panel -->
     <div id="embed" class="tab-content">
-      <h2 style="margin-top:0;font-size:16px;">Embed LLMsTxt</h2>
+      <h2 style="margin-top:0;font-size:16px;">Embed llms.txt file</h2>
       <p style="font-size:13px; line-height:1.5;">
-        You can expose your <code>llms.txt</code> files via (you can use any name but the proposal is to use
-        <code>llms.txt</code>
-        and/or <code>llms-full.txt</code> like <code>robots.txt</code>):
+        You can expose your generated single <code>llms.txt</code> file like:
+      </p>
+      <strong>1. Link tag</strong>
+      <pre><code>&lt;link rel="alternate" type="text/markdown" href="https://example.com/llms.txt" title="LLM-friendly version"&gt;</code></pre>
+
+      <strong>2. Meta tag</strong>
+      <pre><code>&lt;meta name="llms-txt" content="https://example.com/llms.txt"&gt;</code></pre>
+
+      <h2 style="margin-top:0;font-size:16px;">Embed llms-full.txt files</h2>
+      <p style="font-size:13px; line-height:1.5;">
+        You can expose your <code>llms-full.txt</code> files via (you can use any name but the proposal is to use
+        <code>llms-full.txt</code> like <code>robots.txt</code>):
       </p>
 
       <strong>1. Link tag</strong>
       <pre><code>&lt;link rel="alternate" type="text/markdown" href="https://example.com/path/to/llms-full.txt" title="LLM-friendly version"&gt;</code></pre>
 
       <strong>2. Meta tag</strong>
-      <pre><code>&lt;meta name="llms-txt" content="https://example.com/path/to/llms-full.txt"&gt;</code></pre>
+      <pre><code>&lt;meta name="llms-full-txt" content="https://example.com/path/to/llms-full.txt"&gt;</code></pre>
     </div>
 
     <!-- About Panel -->
