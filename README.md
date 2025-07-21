@@ -1,6 +1,6 @@
-# LLMsTxt Generator – Chrome Extension
+# LLMs.Txt Generator
 
-Scan your `sitemap.xml`, convert pages & live sites to LLM-optimized Markdown, and export instantly. It generates llms-full.txt which includes all the links. It can be used as `llms.txt` file as well. If you want to be precise, you can remove unrelated links from the generated `txt` file.
+LLMsTxt Generator is a Chrome Extension. It scans your `sitemap.xml`, convert pages & live sites to LLM-optimized Markdown files, and export them in a single zip file. It generates an overall `llms.txt` file which includes all the links and additionally generates one `llms-full.txt` per page. If you want to be precise, you can remove unrelated links from the generated `txt` file.
 
 ---
 
@@ -75,7 +75,7 @@ Scan your `sitemap.xml`, convert pages & live sites to LLM-optimized Markdown, a
 - **SEO & Content Marketing**: Ideal for content audits, static migrations, UTM tracking, and structured data extraction.
 - **AI & LLM Workflows**: Prep training data, generate knowledge bases, accelerate AI-driven insights.
 - **Developer Productivity**: Integrates with CI pipelines, GitHub Actions, and static site generators.
-- **Flexibility & Extensibility**: Open-source under MIT—[view source on GitHub](https://github.com/plainsignal/llmstxt) and contribute!
+- **Flexibility & Extensibility**: Open-source under Apache 2.0
 
 ## License
 
