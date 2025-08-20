@@ -77,6 +77,11 @@ LLMsTxt Generator is a Chrome Extension. It scans your `sitemap.xml`, convert pa
 - **Developer Productivity**: Integrates with CI pipelines, GitHub Actions, and static site generators.
 - **Flexibility & Extensibility**: Open-source under Apache 2.0
 
+## Related Content
+
+- [AI,LLM,Bot Analytics - Measure LLM Visits To Your Web Content](https://plainsignal.com/ai-llm-bot-analytics)
+- [llmstxt.org](https://llmstxt.org)
+
 ## License
 
 Apache 2.0
